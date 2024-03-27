@@ -214,7 +214,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         },
                         children: [
                           _houses_page(),
-                          _houses_page(),
+                          _houses_scroll(),
                           _houses_list()
                           // Add more pages as needed
                         ],
@@ -348,147 +348,303 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _houses_page (){
-    return Column(
-      children: [
+    return ListView.builder(
 
-        Expanded(
-          child:InkWell(
+      scrollDirection: Axis.horizontal,
+      itemCount: 5,
+      itemBuilder: (context, index){
+        return Container(
+          margin: EdgeInsets.only(right: 10),
+          child:    InkWell(
             onTap: (){
               Navigator.push(context, MaterialPageRoute(builder: (context) => HouseInner1()));
 
             },
             child: Container(
               //color: Colors.red,
-              child: Column(
-                children: [
-                  Expanded(
-                    child: Stack(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(20),
-                              image: DecorationImage(
-                                  image: AssetImage("assets/images/house_in.png"),
-                                  fit: BoxFit.cover
-                              )
+                height: 350,
+                width: MediaQuery.of(context).size.width - 30,
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: Stack(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                                color: Colors.red,
+                                borderRadius: BorderRadius.circular(20),
+                                image: DecorationImage(
+                                    image: AssetImage("assets/images/house_in.png"),
+                                    fit: BoxFit.cover
+                                )
+                            ),
                           ),
-                        ),
-                        Container(
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Icon(Icons.favorite, color: Colors.white,)
-                                  ],
+                          Container(
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Icon(Icons.favorite, color: Colors.white,)
+                                    ],
+                                  ),
                                 ),
-                              ),
 
-                              Expanded(child: Container()),
+                                Expanded(child: Container()),
 
-                              Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.black.withOpacity(0.3),
-                                  borderRadius: BorderRadius.only(
-                                      bottomLeft: Radius.circular(20),
-                                      bottomRight: Radius.circular(20),
+                                Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.black.withOpacity(0.3),
+                                      borderRadius: BorderRadius.only(
+                                        bottomLeft: Radius.circular(20),
+                                        bottomRight: Radius.circular(20),
+                                      )
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(20.0),
+                                        child: Row(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text("St.Patrick Estate", style: TextStyle(fontSize: 20, fontFamily: "MontserratAlternates", fontWeight: FontWeight.w500, height: 1.2, color: Colors.white),),
+                                                Text("Ritz, Adenta | 3.5Km away", style: TextStyle(fontSize: 15, fontFamily: "MontserratAlternates", fontWeight: FontWeight.w500, height: 1.2, color: Colors.white),),
+                                              ],
+                                            ),
+                                            Container(
+                                              width: 80,
+                                              padding: EdgeInsets.all(5),
+                                              decoration: BoxDecoration(
+                                                  color: Colors.green.withOpacity(0.5),
+                                                  borderRadius: BorderRadius.circular(20)
+                                              ),
+                                              child: Center(child: Text("Available", style: TextStyle(fontSize: 10, fontFamily: "MontserratAlternates", color: Colors.green),)),
+
+                                            )
+                                          ],
+                                        ),
+                                      ),
+
+
+                                      Padding(
+                                        padding: const EdgeInsets.all(20.0),
+                                        child: Row(
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: Row(
+                                                children: [
+                                                  Icon(Icons.bed,color: Colors.white, size: 30,),
+                                                  SizedBox(
+                                                    width: 5,
+                                                  ),
+                                                  Text("3", style: TextStyle(fontSize: 12, fontFamily: "MontserratAlternates", fontWeight: FontWeight.w500, height: 1.2, color: Colors.white),),
+
+                                                ],
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: Row(
+                                                children: [
+                                                  Icon(Icons.food_bank,color: Colors.white, size: 30,),
+                                                  SizedBox(
+                                                    width: 5,
+                                                  ),
+                                                  Text("1", style: TextStyle(fontSize: 12, fontFamily: "MontserratAlternates", fontWeight: FontWeight.w500, height: 1.2, color: Colors.white),),
+
+                                                ],
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: Row(
+                                                children: [
+                                                  Icon(Icons.bathtub_rounded,color: Colors.white, size: 30,),
+                                                  SizedBox(
+                                                    width: 5,
+                                                  ),
+                                                  Text("3", style: TextStyle(fontSize: 12, fontFamily: "MontserratAlternates", fontWeight: FontWeight.w500, height: 1.2, color: Colors.white),),
+
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                )
+            ),
+          ),
+        );
+      }
+
+    );
+  }
+  Widget _houses_scroll (){
+    return ListView.builder(
+
+        scrollDirection: Axis.vertical,
+        itemCount: 5,
+        itemBuilder: (context, index){
+          return Container(
+            margin: EdgeInsets.only(bottom: 10),
+            child:    InkWell(
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => HouseInner1()));
+
+              },
+              child: Container(
+                //color: Colors.red,
+                  height: 350,
+                  width: MediaQuery.of(context).size.width - 30,
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: Stack(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(20),
+                                  image: DecorationImage(
+                                      image: AssetImage("assets/images/house_in.png"),
+                                      fit: BoxFit.cover
                                   )
-                                ),
-                                child: Column(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(20.0),
-                                      child: Row(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Column(
+                              ),
+                            ),
+                            Container(
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Icon(Icons.favorite, color: Colors.white,)
+                                      ],
+                                    ),
+                                  ),
+
+                                  Expanded(child: Container()),
+
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        color: Colors.black.withOpacity(0.3),
+                                        borderRadius: BorderRadius.only(
+                                          bottomLeft: Radius.circular(20),
+                                          bottomRight: Radius.circular(20),
+                                        )
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(20.0),
+                                          child: Row(
                                             crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Text("St.Patrick Estate", style: TextStyle(fontSize: 20, fontFamily: "MontserratAlternates", fontWeight: FontWeight.w500, height: 1.2, color: Colors.white),),
-                                              Text("Ritz, Adenta | 3.5Km away", style: TextStyle(fontSize: 15, fontFamily: "MontserratAlternates", fontWeight: FontWeight.w500, height: 1.2, color: Colors.white),),
+                                              Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text("St.Patrick Estate", style: TextStyle(fontSize: 20, fontFamily: "MontserratAlternates", fontWeight: FontWeight.w500, height: 1.2, color: Colors.white),),
+                                                  Text("Ritz, Adenta | 3.5Km away", style: TextStyle(fontSize: 15, fontFamily: "MontserratAlternates", fontWeight: FontWeight.w500, height: 1.2, color: Colors.white),),
+                                                ],
+                                              ),
+                                              Container(
+                                                width: 80,
+                                                padding: EdgeInsets.all(5),
+                                                decoration: BoxDecoration(
+                                                    color: Colors.green.withOpacity(0.5),
+                                                    borderRadius: BorderRadius.circular(20)
+                                                ),
+                                                child: Center(child: Text("Available", style: TextStyle(fontSize: 10, fontFamily: "MontserratAlternates", color: Colors.green),)),
+
+                                              )
                                             ],
                                           ),
-                                          Container(
-                                            width: 80,
-                                            padding: EdgeInsets.all(5),
-                                            decoration: BoxDecoration(
-                                              color: Colors.green.withOpacity(0.5),
-                                              borderRadius: BorderRadius.circular(20)
-                                            ),
-                                            child: Center(child: Text("Available", style: TextStyle(fontSize: 10, fontFamily: "MontserratAlternates", color: Colors.green),)),
+                                        ),
 
-                                          )
-                                        ],
-                                      ),
+
+                                        Padding(
+                                          padding: const EdgeInsets.all(20.0),
+                                          child: Row(
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Row(
+                                                  children: [
+                                                    Icon(Icons.bed,color: Colors.white, size: 30,),
+                                                    SizedBox(
+                                                      width: 5,
+                                                    ),
+                                                    Text("3", style: TextStyle(fontSize: 12, fontFamily: "MontserratAlternates", fontWeight: FontWeight.w500, height: 1.2, color: Colors.white),),
+
+                                                  ],
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Row(
+                                                  children: [
+                                                    Icon(Icons.food_bank,color: Colors.white, size: 30,),
+                                                    SizedBox(
+                                                      width: 5,
+                                                    ),
+                                                    Text("1", style: TextStyle(fontSize: 12, fontFamily: "MontserratAlternates", fontWeight: FontWeight.w500, height: 1.2, color: Colors.white),),
+
+                                                  ],
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Row(
+                                                  children: [
+                                                    Icon(Icons.bathtub_rounded,color: Colors.white, size: 30,),
+                                                    SizedBox(
+                                                      width: 5,
+                                                    ),
+                                                    Text("3", style: TextStyle(fontSize: 12, fontFamily: "MontserratAlternates", fontWeight: FontWeight.w500, height: 1.2, color: Colors.white),),
+
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
                                     ),
+                                  ),
 
-
-                                    Padding(
-                                      padding: const EdgeInsets.all(20.0),
-                                      child: Row(
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Row(
-                                              children: [
-                                                Icon(Icons.bed,color: Colors.white, size: 30,),
-                                                SizedBox(
-                                                  width: 5,
-                                                ),
-                                                Text("3", style: TextStyle(fontSize: 12, fontFamily: "MontserratAlternates", fontWeight: FontWeight.w500, height: 1.2, color: Colors.white),),
-
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Row(
-                                              children: [
-                                                Icon(Icons.food_bank,color: Colors.white, size: 30,),
-                                                SizedBox(
-                                                  width: 5,
-                                                ),
-                                                Text("1", style: TextStyle(fontSize: 12, fontFamily: "MontserratAlternates", fontWeight: FontWeight.w500, height: 1.2, color: Colors.white),),
-
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Row(
-                                              children: [
-                                                Icon(Icons.bathtub_rounded,color: Colors.white, size: 30,),
-                                                SizedBox(
-                                                  width: 5,
-                                                ),
-                                                Text("3", style: TextStyle(fontSize: 12, fontFamily: "MontserratAlternates", fontWeight: FontWeight.w500, height: 1.2, color: Colors.white),),
-
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                ],
                               ),
-
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              )
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  )
+              ),
             ),
-          )
-        ),
-      ],
+          );
+        }
+
     );
   }
 

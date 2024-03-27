@@ -41,7 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     Expanded(flex:5,
                         child: Container()),
                     Expanded(
-                      flex: 6,
+                      flex: 7,
                         child: Container(
                           padding: EdgeInsets.all(10),
                           decoration: BoxDecoration(
