@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rent_straight_tenent/ChatScreen/chat_screen.dart';
+import 'package:rent_straight_tenent/FAQs/faq_screen.dart';
 import 'package:rent_straight_tenent/Favorite/favorite_screen.dart';
 import 'package:rent_straight_tenent/HomeScreen/home_screen.dart';
+import 'package:rent_straight_tenent/InviteFriend/invite_friend.dart';
+import 'package:rent_straight_tenent/Privacy/privacy_code.dart';
 import 'package:rent_straight_tenent/ProfileScreen/UserProfileScreen.dart';
 import 'package:rent_straight_tenent/ProfileScreen/edit_profile.dart';
 import 'package:rent_straight_tenent/constants.dart';
@@ -161,16 +164,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           margin: EdgeInsets.symmetric(vertical: 10),
                           child: Column(
                             children: [
-                              Row(
-                                children: [
-                                  Icon(Icons.lock, size: 50, color: Colors.black,),
-                                 SizedBox(
-                                   width: 20,
-                                 ),
-                                  Text("Privacy", style: TextStyle(fontSize: 15, fontFamily: "MontserratAlternates", fontWeight: FontWeight.w500, height: 1.2,),)
+                              InkWell(
+                                onTap: (){
+                                  Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => PrivacyCode()));
+
+                                },
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.lock, size: 50, color: Colors.black,),
+                                   SizedBox(
+                                     width: 20,
+                                   ),
+                                    Text("Privacy", style: TextStyle(fontSize: 15, fontFamily: "MontserratAlternates", fontWeight: FontWeight.w500, height: 1.2,),)
 
 
-                                ],
+                                  ],
+                                ),
                               ),
                               SizedBox(
                                 height: 10,
@@ -183,16 +192,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           margin: EdgeInsets.symmetric(vertical: 10),
                           child: Column(
                             children: [
-                              Row(
-                                children: [
-                                  Icon(Icons.help_outlined, size: 50, color: Colors.black,),
-                                 SizedBox(
-                                   width: 20,
-                                 ),
-                                  Text("Help", style: TextStyle(fontSize: 15, fontFamily: "MontserratAlternates", fontWeight: FontWeight.w500, height: 1.2,),)
+                              InkWell(
+                                onTap: (){
+                                  Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => FAQScreens()));
+
+                                },
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.help_outlined, size: 50, color: Colors.black,),
+                                   SizedBox(
+                                     width: 20,
+                                   ),
+                                    Text("Help", style: TextStyle(fontSize: 15, fontFamily: "MontserratAlternates", fontWeight: FontWeight.w500, height: 1.2,),)
 
 
-                                ],
+                                  ],
+                                ),
                               ),
                               SizedBox(
                                 height: 10,
@@ -205,16 +220,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           margin: EdgeInsets.symmetric(vertical: 10),
                           child: Column(
                             children: [
-                              Row(
-                                children: [
-                                  Icon(Icons.person_add_rounded, size: 50, color: Colors.black,),
-                                 SizedBox(
-                                   width: 20,
-                                 ),
-                                  Text("Invite your friend", style: TextStyle(fontSize: 15, fontFamily: "MontserratAlternates", fontWeight: FontWeight.w500, height: 1.2,),)
+                              InkWell(
+                                onTap: (){
+                                  Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => InviteFriendScreen()));
+
+                                },
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.person_add_rounded, size: 50, color: Colors.black,),
+                                   SizedBox(
+                                     width: 20,
+                                   ),
+                                    Text("Invite your friend", style: TextStyle(fontSize: 15, fontFamily: "MontserratAlternates", fontWeight: FontWeight.w500, height: 1.2,),)
 
 
-                                ],
+                                  ],
+                                ),
                               ),
                               SizedBox(
                                 height: 10,
