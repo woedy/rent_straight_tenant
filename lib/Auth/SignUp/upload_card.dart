@@ -209,11 +209,11 @@ class _UploadCardState extends State<UploadCard> with SingleTickerProviderStateM
                                                               _image = null;
                                                             });
                                                           },
-                                                          child: Icon(Icons.delete_forever, color: Colors.white,),
+                                                          child: Icon(Icons.delete_forever, color: Colors.white),
                                                           style: ElevatedButton.styleFrom(
-                                                            primary: Colors.red,
                                                             shape: CircleBorder(),
                                                             padding: EdgeInsets.all(8),
+                                                            backgroundColor: Colors.red, // Set the background color directly using backgroundColor
                                                           ),
                                                         ),
                                                       ),
