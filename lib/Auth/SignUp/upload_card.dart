@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -8,13 +9,15 @@ import 'package:image_picker/image_picker.dart';
 import 'package:rent_straight_tenent/Auth/SignUp/password.dart';
 import 'package:rent_straight_tenent/Components/keyboard_utils.dart';
 import 'package:rent_straight_tenent/Components/photos/select_photo_options_screen.dart';
+import 'package:rent_straight_tenent/HomeScreen/home_screen.dart';
 import 'package:rent_straight_tenent/constants.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:pin_code_text_field/pin_code_text_field.dart';
 
 class UploadCard extends StatefulWidget {
-  const UploadCard({super.key});
+  final full_name;
+  const UploadCard({super.key, required this.full_name});
 
   @override
   State<UploadCard> createState() => _UploadCardState();
@@ -93,7 +96,7 @@ class _UploadCardState extends State<UploadCard> with SingleTickerProviderStateM
                       child: ListView(
                         children: [
         
-                          if (_image != null)
+
                             Container(
                               padding: EdgeInsets.symmetric(horizontal: 10),
                               decoration: BoxDecoration(
@@ -231,37 +234,98 @@ class _UploadCardState extends State<UploadCard> with SingleTickerProviderStateM
                                 SizedBox(
                                   height: 30,
                                 ),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 20),
-        
-                                  child: InkWell(
-                                    onTap: () {
-        
-                                      Navigator.push(context, MaterialPageRoute(builder: (context) => PasswordScreen()));
-        
-        
-                                    },
-                                    child: Container(
-                                      padding: EdgeInsets.all(20),
-                                      //margin: EdgeInsets.all(10),
-                                      height: 59,
-                                      width: MediaQuery.of(context).size.width,
-                                      decoration: BoxDecoration(
-                                          color: rentPrimary,
-                                          borderRadius: BorderRadius.circular(15)),
-                                      child: Center(
-                                        child: Text(
-                                          "Continue",
-                                          style: TextStyle(color: Colors.white),
+
+
+
+
+                                if(_image == null)...[
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 20),
+
+                                    child: InkWell(
+                                      onTap: () {
+                                        _showLoadingDialogModal(context);
+
+                                        Timer(
+                                            Duration(seconds: 4),
+                                                () {
+                                              Navigator.of(context).pop();
+                                              _showSuccessDialogModal(context);
+
+                                              Timer(
+                                                  Duration(seconds: 2),
+                                                      () {
+                                                        Navigator.pushReplacement(context,
+                                                            MaterialPageRoute(builder: (context) => HomeScreen())
+                                                        );
+
+                                                      }
+                                              );
+                                            }
+                                        );
+
+
+
+
+
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.all(20),
+                                        //margin: EdgeInsets.all(10),
+                                        height: 59,
+                                        width: MediaQuery.of(context).size.width,
+                                        decoration: BoxDecoration(
+                                            color: rentPrimary,
+                                            borderRadius: BorderRadius.circular(15)),
+                                        child: Center(
+                                          child: Text(
+                                            "Skip",
+                                            style: TextStyle(color: Colors.white),
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-        
-        
-        
-        
+                                ]else...[
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 20),
+
+                                    child: InkWell(
+                                      onTap: () {
+
+                                        _showLoadingDialogModal(context);
+
+                                        Timer(
+                                            Duration(seconds: 4),
+                                                () {
+                                              Navigator.of(context).pop();
+                                              _showSuccessDialogModal(context);
+                                            }
+                                        );
+
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.all(20),
+                                        //margin: EdgeInsets.all(10),
+                                        height: 59,
+                                        width: MediaQuery.of(context).size.width,
+                                        decoration: BoxDecoration(
+                                            color: rentPrimary,
+                                            borderRadius: BorderRadius.circular(15)),
+                                        child: Center(
+                                          child: Text(
+                                            "Continue",
+                                            style: TextStyle(color: Colors.white),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ]
+
+
+
+
                               ],
                             ),
                           ),
@@ -373,5 +437,112 @@ class _UploadCardState extends State<UploadCard> with SingleTickerProviderStateM
       },
     );
   }
+
+
+  void _showSuccessDialogModal(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.all(15),
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage("assets/images/sprinkles.png"),
+                    fit: BoxFit.cover
+                )
+            ),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Image.asset("assets/images/rent_logo.png"),
+                    SizedBox(
+                      width: 10,
+                    ),
+
+                    Text("RentStraight", style: TextStyle(fontSize: 32, fontWeight: FontWeight.w500, height: 1.2),),
+
+
+                  ],
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+
+                Text("Welcome to RentStraight", style: TextStyle(fontSize: 32, fontWeight: FontWeight.w500, height: 1.2),),
+                SizedBox(
+                  height: 20,
+                ),
+
+                Row(
+                  children: [
+                    Text("Elevate your ", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400, height: 1.2),),
+                    Text("experience", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, height: 1.2, color: rentPrimary),),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Icon(Icons.check_circle_outline_rounded, color: Colors.green, size: 55,),
+                  ],
+                ),
+
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+
+  void _showLoadingDialogModal(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.all(15),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Image.asset("assets/images/rent_logo.png"),
+                    SizedBox(
+                      width: 10,
+                    ),
+
+                    Text("RentStraight", style: TextStyle(fontSize: 32, fontWeight: FontWeight.w500, height: 1.2),),
+
+
+                  ],
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+
+                Text("is setting up your account", style: TextStyle(fontSize: 32, fontWeight: FontWeight.w400, height: 1.2),),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    RotationTransition(
+                      turns: _controller,
+                      child: Image.asset(
+                        "assets/icons/loading.png",
+                        color: Colors.black,
+
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
 
 }

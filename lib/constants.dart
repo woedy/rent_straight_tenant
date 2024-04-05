@@ -16,8 +16,8 @@ const bodyText2 = Color(0xffffffff);
 const clay = Color(0xffa499b3);
 
 
-const hostName = "https://api.bookelu.zuludesks.com/api/";
-const hostNameMedia = "https://api.bookelu.zuludesks.com";
+const hostName = "https://rentstraight.teamalfy.co.uk/api/tenants/v1/";
+//const hostNameMedia = "https://api.bookelu.zuludesks.com";
 
 
 

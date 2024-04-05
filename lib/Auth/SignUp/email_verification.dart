@@ -12,7 +12,9 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:pin_code_text_field/pin_code_text_field.dart';
 
 class EmailVerification extends StatefulWidget {
-  const EmailVerification({super.key});
+  final token;
+  final full_name;
+  const EmailVerification({super.key, required this.token, required this.full_name });
 
   @override
   State<EmailVerification> createState() => _EmailVerificationState();
@@ -71,7 +73,7 @@ class _EmailVerificationState extends State<EmailVerification> with SingleTicker
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Mr.Fred Fafa, ", style: TextStyle(fontSize: 36, fontFamily: "MontserratAlternates", fontWeight: FontWeight.w500, height: 1.2),),
+                        Text(widget.full_name +",", style: TextStyle(fontSize: 36, fontFamily: "MontserratAlternates", fontWeight: FontWeight.w500, height: 1.2),),
                         SizedBox(
                           height: 15,
                         ),
@@ -170,7 +172,7 @@ class _EmailVerificationState extends State<EmailVerification> with SingleTicker
         
                                   child: InkWell(
                                     onTap: () {
-                                      //   Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => OnboardingScreen()));
+                                      Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => UploadPhoto(full_name: widget.full_name)));
                                     },
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.start,
@@ -342,7 +344,7 @@ class _EmailVerificationState extends State<EmailVerification> with SingleTicker
                 InkWell(
                   onTap: () {
 
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => UploadPhoto()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => UploadPhoto(full_name: widget.full_name,)));
 
 
                   },

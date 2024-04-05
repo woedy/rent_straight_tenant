@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:rent_straight_tenent/Auth/SignIn/sign_in_screen.dart';
 import 'package:rent_straight_tenent/ChatScreen/chat_screen.dart';
 import 'package:rent_straight_tenent/FAQs/faq_screen.dart';
 import 'package:rent_straight_tenent/Favorite/favorite_screen.dart';
@@ -9,6 +10,7 @@ import 'package:rent_straight_tenent/Privacy/privacy_code.dart';
 import 'package:rent_straight_tenent/ProfileScreen/UserProfileScreen.dart';
 import 'package:rent_straight_tenent/ProfileScreen/edit_profile.dart';
 import 'package:rent_straight_tenent/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -102,7 +104,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
 
               Expanded(
-                child: Column(
+                child: ListView(
                   children: [
                     Row(
                       children: [
@@ -241,11 +243,48 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 height: 10,
                               ),
                               Divider(),
+
+
+
                             ],
                           ),
                         ),
+
+
                       ],
-                    )
+                    ),
+
+                    InkWell(
+                      onTap: () {
+
+
+
+                        clearApiKey();
+
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SignInScreen()),
+                              (route) => false,
+                        );
+
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(20),
+                        //margin: EdgeInsets.all(10),
+                        height: 59,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                            color: rentPrimary,
+                            borderRadius: BorderRadius.circular(15)),
+                        child: Center(
+                          child: Text(
+                            "Logout",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -349,6 +388,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
+  Future<void> clearApiKey() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove("API_Key");
+    await prefs.remove("user_data");
+  }
 
 
 

@@ -79,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
         builder: (BuildContext context, AsyncSnapshot snapshot) {
 
           return api_key == null ? SplashScreen() : HomeScreen();
-          //return SettingsScreen();
+          //return UploadPhoto();
 
         });
   }

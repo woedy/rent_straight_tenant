@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rent_straight_tenent/Auth/SignUp/email_verification.dart';
+import 'package:rent_straight_tenent/Auth/SignUp/password.dart';
 import 'package:rent_straight_tenent/Components/keyboard_utils.dart';
 import 'package:rent_straight_tenent/constants.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
@@ -28,6 +29,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   String? phone;
   String? _code;
   String? _number;
+  String? username;
   String? country;
 
   @override
@@ -140,7 +142,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                             autofocus: false,
                                             onSaved: (value) {
                                               setState(() {
-                                                //full_name = value;
+                                                full_name = value;
                                               });
                                             },
                                           ),
@@ -261,17 +263,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                             ],
                                             validator: (value) {
                                               if (value!.isEmpty) {
-                                                return 'Full name is required';
+                                                return 'Username is required';
                                               }
                                               if (value.length < 3) {
-                                                return 'Full name too short';
+                                                return 'Username too short';
                                               }
                                             },
                                             textInputAction: TextInputAction.next,
                                             autofocus: false,
                                             onSaved: (value) {
                                               setState(() {
-                                                //full_name = value;
+                                                username = value;
                                               });
                                             },
                                           ),
@@ -344,22 +346,32 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     ),
                                     InkWell(
                                       onTap: () {
-        /*
-                                            if (_formKey.currentState!.validate()) {
-                                              _formKey.currentState!.save();
-                                              KeyboardUtil.hideKeyboard(context);
-
-                                              //_futureSignIn = signInUser(email!, password!);
-                                              //_futureSignIn = signInUser(user!, password!, platformType!);
 
 
-                                            }*/
 
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    EmailVerification()));
+                                        if (_formKey.currentState!.validate()) {
+                                          _formKey.currentState!.save();
+                                          KeyboardUtil.hideKeyboard(context);
+
+
+                                          print("###############");
+                                          print(full_name);
+                                          print(username);
+                                          print(email);
+                                          phone = _code.toString() + _number.toString();
+                                          print(phone);
+
+
+                                          Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => PasswordScreen(
+                                            full_name: full_name,
+                                            username: username,
+                                            email: email,
+                                            contact_number: phone
+                                          )));
+
+
+                                        }
+
                                       },
                                       child: Container(
                                         padding: EdgeInsets.all(20),

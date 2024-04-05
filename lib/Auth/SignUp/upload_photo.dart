@@ -14,7 +14,8 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:pin_code_text_field/pin_code_text_field.dart';
 
 class UploadPhoto extends StatefulWidget {
-  const UploadPhoto({super.key});
+  final full_name;
+  const UploadPhoto({super.key, required this.full_name});
 
   @override
   State<UploadPhoto> createState() => _UploadPhotoState();
@@ -72,7 +73,7 @@ class _UploadPhotoState extends State<UploadPhoto> with SingleTickerProviderStat
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Mr.Fred Fafa, ", style: TextStyle(fontSize: 36, fontFamily: "MontserratAlternates", fontWeight: FontWeight.w500, height: 1.2),),
+                        Text(widget.full_name +",", style: TextStyle(fontSize: 36, fontFamily: "MontserratAlternates", fontWeight: FontWeight.w500, height: 1.2),),
                         SizedBox(
                           height: 15,
                         ),
@@ -185,33 +186,64 @@ class _UploadPhotoState extends State<UploadPhoto> with SingleTickerProviderStat
                                 SizedBox(
                                   height: 30,
                                 ),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 20),
-        
-                                  child: InkWell(
-                                    onTap: () {
-        
-                                      Navigator.push(context, MaterialPageRoute(builder: (context) => UploadCard()));
-        
-        
-                                    },
-                                    child: Container(
-                                      padding: EdgeInsets.all(20),
-                                      //margin: EdgeInsets.all(10),
-                                      height: 59,
-                                      width: MediaQuery.of(context).size.width,
-                                      decoration: BoxDecoration(
-                                          color: rentPrimary,
-                                          borderRadius: BorderRadius.circular(15)),
-                                      child: Center(
-                                        child: Text(
-                                          "Continue",
-                                          style: TextStyle(color: Colors.white),
+                                if(_image == null)...[
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 20),
+
+                                    child: InkWell(
+                                      onTap: () {
+
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) => UploadCard(full_name: widget.full_name)));
+
+
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.all(20),
+                                        //margin: EdgeInsets.all(10),
+                                        height: 59,
+                                        width: MediaQuery.of(context).size.width,
+                                        decoration: BoxDecoration(
+                                            color: rentPrimary,
+                                            borderRadius: BorderRadius.circular(15)),
+                                        child: Center(
+                                          child: Text(
+                                            "Skip",
+                                            style: TextStyle(color: Colors.white),
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
+                                ]else...[
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 20),
+
+                                    child: InkWell(
+                                      onTap: () {
+
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) => UploadCard(full_name: widget.full_name,)));
+
+
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.all(20),
+                                        //margin: EdgeInsets.all(10),
+                                        height: 59,
+                                        width: MediaQuery.of(context).size.width,
+                                        decoration: BoxDecoration(
+                                            color: rentPrimary,
+                                            borderRadius: BorderRadius.circular(15)),
+                                        child: Center(
+                                          child: Text(
+                                            "Continue",
+                                            style: TextStyle(color: Colors.white),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ]
+
         
         
         
