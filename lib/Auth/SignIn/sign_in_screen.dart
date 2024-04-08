@@ -486,6 +486,10 @@ class _SignInScreenState extends State<SignInScreen>
                   //Navigator.of(context).pop();
 
                   // Navigate to the dashboard
+
+
+
+
                   Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
@@ -493,9 +497,12 @@ class _SignInScreenState extends State<SignInScreen>
                         (route) => false,
                   );
 
-
-
                 });
+
+
+
+
+              });
 
 
             }
