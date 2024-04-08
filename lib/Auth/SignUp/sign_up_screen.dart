@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rent_straight_tenent/Auth/SignUp/email_verification.dart';
 import 'package:rent_straight_tenent/Auth/SignUp/password.dart';
+import 'package:rent_straight_tenent/Auth/SignUp/upload_photo.dart';
 import 'package:rent_straight_tenent/Components/keyboard_utils.dart';
 import 'package:rent_straight_tenent/constants.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
@@ -362,7 +363,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                           print(phone);
 
 
-                                          Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => PasswordScreen(
+                                               Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => UploadPhoto(
                                             full_name: full_name,
                                             username: username,
                                             email: email,
@@ -370,6 +371,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                           )));
 
 
+                                     /*     Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => PasswordScreen(
+                                            full_name: full_name,
+                                            username: username,
+                                            email: email,
+                                            contact_number: phone
+                                          )));
+
+*/
                                         }
 
                                       },
@@ -384,7 +393,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                                 BorderRadius.circular(15)),
                                         child: Center(
                                           child: Text(
-                                            "Sign Up",
+                                            "Continue",
                                             style: TextStyle(color: Colors.white),
                                           ),
                                         ),

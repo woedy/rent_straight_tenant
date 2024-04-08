@@ -486,16 +486,16 @@ class _SignInScreenState extends State<SignInScreen>
                   //Navigator.of(context).pop();
 
                   // Navigate to the dashboard
-                  Navigator.pushReplacement(
+                  Navigator.pushAndRemoveUntil(
                     context,
-                    MaterialPageRoute(builder: (context) => HomeScreen()),
+                    MaterialPageRoute(
+                        builder: (context) => HomeScreen()),
+                        (route) => false,
                   );
+
+
+
                 });
-
-
-
-
-              });
 
 
             }
@@ -509,7 +509,7 @@ class _SignInScreenState extends State<SignInScreen>
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   Navigator.pop(context);
                   Navigator.pop(context);
-                  Navigator.pop(context);
+                 // Navigator.pop(context);
 
                   _showErrorDialogModal(context);
 
@@ -518,13 +518,16 @@ class _SignInScreenState extends State<SignInScreen>
                   });
 
 
-                  Future.delayed(Duration(milliseconds: 700), () {
+
+
+
+               /*   Future.delayed(Duration(milliseconds: 700), () {
 
                     Navigator.pushReplacement(context,
                         MaterialPageRoute(builder: (context) => SignInScreen())
                     );
 
-                  });
+                  });*/
 
 
 

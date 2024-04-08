@@ -15,7 +15,15 @@ import 'package:pin_code_text_field/pin_code_text_field.dart';
 
 class UploadPhoto extends StatefulWidget {
   final full_name;
-  const UploadPhoto({super.key, required this.full_name});
+  final username;
+  final email;
+  final contact_number;
+  const UploadPhoto({super.key,
+    required this.full_name,
+    required this.username,
+    required this.email,
+    required this.contact_number,
+  });
 
   @override
   State<UploadPhoto> createState() => _UploadPhotoState();
@@ -193,7 +201,12 @@ class _UploadPhotoState extends State<UploadPhoto> with SingleTickerProviderStat
                                     child: InkWell(
                                       onTap: () {
 
-                                        Navigator.push(context, MaterialPageRoute(builder: (context) => UploadCard(full_name: widget.full_name)));
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) => UploadCard(
+                                          full_name: widget.full_name,
+                                          username: widget.username,
+                                          email: widget.email,
+                                          contact_number: widget.contact_number,
+                                        )));
 
 
                                       },
@@ -221,7 +234,12 @@ class _UploadPhotoState extends State<UploadPhoto> with SingleTickerProviderStat
                                     child: InkWell(
                                       onTap: () {
 
-                                        Navigator.push(context, MaterialPageRoute(builder: (context) => UploadCard(full_name: widget.full_name,)));
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) => UploadCard(
+                                          full_name: widget.full_name,
+                                          username: widget.username,
+                                          email: widget.email,
+                                          contact_number: widget.contact_number,
+                                        )));
 
 
                                       },

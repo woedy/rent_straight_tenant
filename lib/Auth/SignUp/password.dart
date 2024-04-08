@@ -460,21 +460,17 @@ class _PasswordScreenState extends State<PasswordScreen> with SingleTickerProvid
                   _futureSignUp = null; // Reset _futureSignIn here
                 });
 
+
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => EmailVerification(token: data.data!.token!, full_name: widget.full_name,)),
+                  MaterialPageRoute(builder: (context) => EmailVerification(
+                    full_name: widget.full_name,
+
+                    username: widget.username,
+                    email: widget.email,
+                    contact_number: widget.contact_number,
+                  )),
                 );
-
-
-
-          /*      Future.delayed(Duration(milliseconds: 700), () {
-
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => EmailVerification(token: data.data!.token!, full_name: widget.full_name,)),
-                  );
-                });
-*/
 
              /*   setState(() {
                   _futureSignUp = null; // Reset _futureSignIn here

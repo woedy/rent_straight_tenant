@@ -12,9 +12,19 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:pin_code_text_field/pin_code_text_field.dart';
 
 class EmailVerification extends StatefulWidget {
-  final token;
   final full_name;
-  const EmailVerification({super.key, required this.token, required this.full_name });
+  final username;
+  final email;
+  final contact_number;
+
+  const EmailVerification({super.key,
+
+    required this.full_name,
+    required this.username,
+    required this.email,
+    required this.contact_number,
+
+  });
 
   @override
   State<EmailVerification> createState() => _EmailVerificationState();
@@ -112,46 +122,48 @@ class _EmailVerificationState extends State<EmailVerification> with SingleTicker
                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
         
                                               children: [
-                                                PinCodeTextField(
-                                                  autofocus: true,
-                                                  controller: controller,
-                                                  hideCharacter: false,
-                                                  highlight: true,
-                                                  highlightColor: Colors.black,
-                                                  defaultBorderColor:
-                                                  Colors.grey.withOpacity(0.3),
-                                                  hasTextBorderColor:
-                                                  Colors.grey.withOpacity(0.2),
-                                                  highlightPinBoxColor: Colors.white.withOpacity(0.3),
-                                                  pinBoxColor: Colors.white.withOpacity(0.3),
-                                                  pinBoxRadius: 10,
-                                                  keyboardType: TextInputType.text,
-                                                  maxLength: 4,
-                                                  //maskCharacter: "😎",
-                                                  onTextChanged: (text) {
-                                                    setState(() {
-                                                      hasError = false;
-                                                    });
-                                                  },
-                                                  onDone: (text) {
-                                                    print("DONE $text");
-                                                    print("DONE CONTROLLER ${controller.text}");
-                                                    email_token=text.toString();
-                                                  },
-                                                  pinBoxWidth: 80,
-                                                  pinBoxHeight: 80,
-                                                  //hasUnderline: true,
-                                                  wrapAlignment: WrapAlignment.spaceAround,
-                                                  pinBoxDecoration: ProvidedPinBoxDecoration
-                                                      .defaultPinBoxDecoration,
-                                                  pinTextStyle: TextStyle(fontSize: 35.0),
-                                                  pinTextAnimatedSwitcherTransition:
-                                                  ProvidedPinBoxTextAnimation
-                                                      .scalingTransition,
-                                                  pinTextAnimatedSwitcherDuration:
-                                                  Duration(milliseconds: 300),
-                                                  highlightAnimationBeginColor: Colors.black,
-                                                  highlightAnimationEndColor: Colors.white12,
+                                                Expanded(
+                                                  child: PinCodeTextField(
+                                                    autofocus: true,
+                                                    controller: controller,
+                                                    hideCharacter: false,
+                                                    highlight: true,
+                                                    highlightColor: Colors.black,
+                                                    defaultBorderColor:
+                                                    Colors.grey.withOpacity(0.3),
+                                                    hasTextBorderColor:
+                                                    Colors.grey.withOpacity(0.2),
+                                                    highlightPinBoxColor: Colors.white.withOpacity(0.3),
+                                                    pinBoxColor: Colors.white.withOpacity(0.3),
+                                                    pinBoxRadius: 10,
+                                                    keyboardType: TextInputType.text,
+                                                    maxLength:6,
+                                                    //maskCharacter: "😎",
+                                                    onTextChanged: (text) {
+                                                      setState(() {
+                                                        hasError = false;
+                                                      });
+                                                    },
+                                                    onDone: (text) {
+                                                      print("DONE $text");
+                                                      print("DONE CONTROLLER ${controller.text}");
+                                                      email_token=text.toString();
+                                                    },
+                                                    pinBoxWidth: 51,
+                                                    pinBoxHeight: 51,
+                                                    //hasUnderline: true,
+                                                    wrapAlignment: WrapAlignment.spaceAround,
+                                                    pinBoxDecoration: ProvidedPinBoxDecoration
+                                                        .defaultPinBoxDecoration,
+                                                    pinTextStyle: TextStyle(fontSize: 25.0),
+                                                    pinTextAnimatedSwitcherTransition:
+                                                    ProvidedPinBoxTextAnimation
+                                                        .scalingTransition,
+                                                    pinTextAnimatedSwitcherDuration:
+                                                    Duration(milliseconds: 300),
+                                                    highlightAnimationBeginColor: Colors.black,
+                                                    highlightAnimationEndColor: Colors.white12,
+                                                  ),
                                                 ),
                                               ],
                                             ),
@@ -172,7 +184,7 @@ class _EmailVerificationState extends State<EmailVerification> with SingleTicker
         
                                   child: InkWell(
                                     onTap: () {
-                                      Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => UploadPhoto(full_name: widget.full_name)));
+                                      //Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => UploadPhoto(full_name: widget.full_name)));
                                     },
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.start,
@@ -344,7 +356,7 @@ class _EmailVerificationState extends State<EmailVerification> with SingleTicker
                 InkWell(
                   onTap: () {
 
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => UploadPhoto(full_name: widget.full_name,)));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
 
 
                   },
