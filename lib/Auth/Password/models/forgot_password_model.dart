@@ -1,11 +1,11 @@
-class SignUpModel {
+class ForgotPasswordModel {
   Data? data;
   Errors? errors;
   String? message;
 
-  SignUpModel({this.data, this.errors, this.message});
+  ForgotPasswordModel({this.data, this.errors, this.message});
 
-  SignUpModel.fromJson(Map<String, dynamic> json) {
+  ForgotPasswordModel.fromJson(Map<String, dynamic> json) {
     data = json['data'] != null ? new Data.fromJson(json['data']) : null;
     errors =
     json['errors'] != null ? new Errors.fromJson(json['errors']) : null;

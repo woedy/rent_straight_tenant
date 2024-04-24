@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:rent_straight_tenent/Auth/Password/forgot_password.dart';
+import 'package:rent_straight_tenent/Auth/Password/verify_reset_token.dart';
 import 'package:rent_straight_tenent/Auth/SignIn/sign_in_screen.dart';
 import 'package:rent_straight_tenent/Auth/SignUp/email_verification.dart';
 import 'package:rent_straight_tenent/Auth/SignUp/password.dart';
@@ -79,10 +81,12 @@ class _MyHomePageState extends State<MyHomePage> {
         builder: (BuildContext context, AsyncSnapshot snapshot) {
 
           return api_key == null ? SplashScreen() : HomeScreen();
-          //return UploadPhoto();
+          //return VerifyResetToken(email: "ximod71716@funvane.com",);
+          //return ForgotPasswordScreen();
 
         });
   }
+
 
   Future apiKey() async {
     api_key = await getApiPref();

@@ -1,11 +1,11 @@
-class SignUpModel {
+class VerifyDetailsModel {
   Data? data;
   Errors? errors;
   String? message;
 
-  SignUpModel({this.data, this.errors, this.message});
+  VerifyDetailsModel({this.data, this.errors, this.message});
 
-  SignUpModel.fromJson(Map<String, dynamic> json) {
+  VerifyDetailsModel.fromJson(Map<String, dynamic> json) {
     data = json['data'] != null ? new Data.fromJson(json['data']) : null;
     errors =
     json['errors'] != null ? new Errors.fromJson(json['errors']) : null;
@@ -48,22 +48,13 @@ class Data {
 }
 
 class Errors {
-  List<String>? fullName;
-  List<String>? password;
   List<String>? email;
   List<String>? username;
   List<String>? phoneNumber;
 
-  Errors(
-      {this.fullName,
-        this.password,
-        this.email,
-        this.username,
-        this.phoneNumber});
+  Errors({this.email, this.username, this.phoneNumber});
 
   Errors.fromJson(Map<String, dynamic> json) {
-    fullName = json['full_name'].cast<String>();
-    password = json['password'].cast<String>();
     email = json['email'].cast<String>();
     username = json['username'].cast<String>();
     phoneNumber = json['phone_number'].cast<String>();
@@ -71,8 +62,6 @@ class Errors {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['full_name'] = this.fullName;
-    data['password'] = this.password;
     data['email'] = this.email;
     data['username'] = this.username;
     data['phone_number'] = this.phoneNumber;

@@ -3,8 +3,9 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:rent_straight_tenent/Auth/Password/models/verify_pasword_token_model.dart';
+import 'package:rent_straight_tenent/Auth/Password/verify_reset_token.dart';
 import 'package:rent_straight_tenent/Auth/SignUp/email_verification.dart';
-import 'package:rent_straight_tenent/Auth/SignUp/models/verify_details.dart';
 import 'package:rent_straight_tenent/Auth/SignUp/password.dart';
 import 'package:rent_straight_tenent/Auth/SignUp/upload_photo.dart';
 import 'package:rent_straight_tenent/Components/keyboard_utils.dart';
@@ -14,35 +15,29 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:http/http.dart' as http;
 
 
-Future<VerifyDetailsModel> verifyDetails(String username, String email, String contact_number) async {
+Future<VerifyResetTokenModel> verifyDetails(String email) async {
 
   final response = await http.post(
-    Uri.parse(hostName + "verify/details"),
+    Uri.parse(hostName + "forgot-password"),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Accept': 'application/json'
     },
     body: jsonEncode({
-      "username": username,
       "email": email,
-      "phone_number": contact_number,
     }),
   );
 
 
-  if (response.statusCode == 200) {
+  if (response.statusCode == 201  || response.statusCode == 200) {
     print(jsonDecode(response.body));
-    final result = json.decode(response.body);
-    if (result != null) {
-
-    }
-    return VerifyDetailsModel.fromJson(jsonDecode(response.body));
+    return VerifyResetTokenModel.fromJson(jsonDecode(response.body));
   } else if (response.statusCode == 422) {
     print(jsonDecode(response.body));
-    return VerifyDetailsModel.fromJson(jsonDecode(response.body));
+    return VerifyResetTokenModel.fromJson(jsonDecode(response.body));
   }  else if (response.statusCode == 403) {
     print(jsonDecode(response.body));
-    return VerifyDetailsModel.fromJson(jsonDecode(response.body));
+    return VerifyResetTokenModel.fromJson(jsonDecode(response.body));
   }  else {
     print(jsonDecode(response.body));
     throw Exception('Failed to Sign Up');
@@ -50,33 +45,25 @@ Future<VerifyDetailsModel> verifyDetails(String username, String email, String c
 }
 
 
-class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key});
+class ForgotPasswordScreen extends StatefulWidget {
+  const ForgotPasswordScreen({super.key});
 
   @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
+  State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderStateMixin  {
+class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> with SingleTickerProviderStateMixin  {
   final _formKey = GlobalKey<FormState>();
-  var show_password = false;
 
   FocusNode focusNode = FocusNode();
 
-  Future<VerifyDetailsModel>? _futureVerifyDetail;
+  Future<VerifyResetTokenModel>? _futureVerifyDetail;
   late AnimationController _controller;
 
 
 
   String? email;
-  String? password;
 
-  String? full_name;
-  String? phone;
-  String? _code;
-  String? _number;
-  String? username;
-  String? country;
 
 
 
@@ -132,9 +119,9 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Welcome",
+                          "Forgot Password",
                           style: TextStyle(
-                              fontSize: 64,
+                              fontSize: 50,
                               fontFamily: "MontserratAlternates",
                               fontWeight: FontWeight.w500,
                               height: 1.2),
@@ -142,7 +129,7 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
                         SizedBox(
                           height: 15,
                         ),
-                        Text("Lets get you started",
+                        Text("Enter your email to send reset token",
                             style: TextStyle(
                                 fontSize: 20,
                                 fontFamily: "MontserratAlternates",
@@ -166,68 +153,7 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
                                     key: _formKey,
                                     child: Column(
                                       children: [
-                                        Column(
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 10),
-                                              decoration: BoxDecoration(
-                                                  color: Colors.white,
-                                                  borderRadius:
-                                                  BorderRadius.circular(10),
-                                                  border: Border.all(
-                                                      color: Colors.black
-                                                          .withOpacity(0.1))),
-                                              child: TextFormField(
-                                                style: TextStyle(color: Colors.black),
-                                                decoration: InputDecoration(
-                                                  //hintText: 'Enter Username/Email',
 
-                                                  hintStyle: TextStyle(
-                                                      color: Colors.grey,
-                                                      fontWeight: FontWeight.normal),
-                                                  labelText: "Full name",
-                                                  labelStyle: TextStyle(
-                                                      fontSize: 13,
-                                                      color: Colors.black
-                                                          .withOpacity(0.5)),
-                                                  enabledBorder: UnderlineInputBorder(
-                                                      borderSide: BorderSide(
-                                                          color: Colors.white)),
-                                                  focusedBorder: UnderlineInputBorder(
-                                                      borderSide: BorderSide(
-                                                          color: Colors.white)),
-                                                  border: InputBorder.none,
-                                                ),
-                                                inputFormatters: [
-                                                  LengthLimitingTextInputFormatter(
-                                                      225),
-                                                  PasteTextInputFormatter(),
-                                                ],
-                                                validator: (value) {
-                                                  if (value!.isEmpty) {
-                                                    return 'Full name is required';
-                                                  }
-                                                  if (value.length < 3) {
-                                                    return 'Full name too short';
-                                                  }
-                                                },
-                                                textInputAction: TextInputAction.next,
-                                                autofocus: false,
-                                                onSaved: (value) {
-                                                  setState(() {
-                                                    full_name = value;
-                                                  });
-                                                },
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: 20,
-                                        ),
                                         Column(
                                           crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -294,129 +220,7 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
                                             ),
                                           ],
                                         ),
-                                        SizedBox(
-                                          height: 20,
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 10),
-                                              decoration: BoxDecoration(
-                                                  color: Colors.white,
-                                                  borderRadius:
-                                                  BorderRadius.circular(10),
-                                                  border: Border.all(
-                                                      color: Colors.black
-                                                          .withOpacity(0.1))),
-                                              child: TextFormField(
-                                                style: TextStyle(color: Colors.black),
-                                                decoration: InputDecoration(
-                                                  //hintText: 'Enter Username/Email',
 
-                                                  hintStyle: TextStyle(
-                                                      color: Colors.grey,
-                                                      fontWeight: FontWeight.normal),
-                                                  labelText: "Username",
-                                                  labelStyle: TextStyle(
-                                                      fontSize: 13,
-                                                      color: Colors.black
-                                                          .withOpacity(0.5)),
-                                                  enabledBorder: UnderlineInputBorder(
-                                                      borderSide: BorderSide(
-                                                          color: Colors.white)),
-                                                  focusedBorder: UnderlineInputBorder(
-                                                      borderSide: BorderSide(
-                                                          color: Colors.white)),
-                                                  border: InputBorder.none,
-                                                ),
-                                                inputFormatters: [
-                                                  LengthLimitingTextInputFormatter(
-                                                      225),
-                                                  PasteTextInputFormatter(),
-                                                ],
-                                                validator: (value) {
-                                                  if (value!.isEmpty) {
-                                                    return 'Username is required';
-                                                  }
-                                                  if (value.length < 3) {
-                                                    return 'Username too short';
-                                                  }
-                                                },
-                                                textInputAction: TextInputAction.next,
-                                                autofocus: false,
-                                                onSaved: (value) {
-                                                  setState(() {
-                                                    username = value;
-                                                  });
-                                                },
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: 20,
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                          children: [
-                                            IntlPhoneField(
-                                              focusNode: focusNode,
-                                              style: TextStyle(color: Colors.black),
-                                              dropdownIcon: Icon(
-                                                Icons.arrow_drop_down,
-                                                color: Colors.grey,
-                                              ),
-                                              decoration: InputDecoration(
-                                                // labelText: 'Phone Number',
-                                                  border: OutlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                      color: Colors.transparent,
-                                                    ),
-                                                  ),
-                                                  enabledBorder:
-                                                  new OutlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                        color: Colors.black
-                                                            .withOpacity(0.1)),
-                                                  ),
-                                                  focusedBorder:
-                                                  new OutlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                        color: Colors.black
-                                                            .withOpacity(0.1)),
-                                                  )),
-                                              languageCode: "en",
-                                              initialCountryCode: "GH",
-                                              validator: (e) {
-                                                if (e == null) {
-                                                  return 'Phone Number required';
-                                                }
-                                                return null;
-                                              },
-                                              onChanged: (value) {
-                                                _code = value.countryCode.toString();
-                                                _number = value.number.toString();
-                                                country =
-                                                    value.countryISOCode.toString();
-                                              },
-                                              onCountryChanged: (country) {},
-                                              onSaved: (value) {
-                                                //_onSaveForm(value.toString());
-                                                setState(() {
-                                                  _code =
-                                                      value!.countryCode.toString();
-                                                  _number = value.number.toString();
-                                                  country =
-                                                      value.countryISOCode.toString();
-                                                });
-                                              },
-                                            ),
-                                          ],
-                                        ),
                                         SizedBox(
                                           height: 20,
                                         ),
@@ -431,13 +235,11 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
 
 
                                               print("###############");
-                                              print(full_name);
-                                              print(username);
-                                              print(email);
-                                              phone = _code.toString() + _number.toString();
-                                              print(phone);
 
-                                              _futureVerifyDetail = verifyDetails(username!, email!, phone!);
+                                              print(email);
+
+
+                                              _futureVerifyDetail = verifyDetails(email!);
 
 
 
@@ -468,27 +270,7 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
                                 SizedBox(
                                   height: 30,
                                 ),
-                                InkWell(
-                                  onTap: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        "Already have an account? ",
-                                        style: TextStyle(fontSize: 12),
-                                      ),
-                                      Text(
-                                        "Sign in here",
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w600,
-                                            color: rentPrimary),
-                                      ),
-                                    ],
-                                  ),
-                                )
+
                               ],
                             ),
                           ),
@@ -505,8 +287,8 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
   }
 
 
-  FutureBuilder<VerifyDetailsModel> buildFutureBuilder() {
-    return FutureBuilder<VerifyDetailsModel>(
+  FutureBuilder<VerifyResetTokenModel> buildFutureBuilder() {
+    return FutureBuilder<VerifyResetTokenModel>(
         future: _futureVerifyDetail,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -522,7 +304,7 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
             //print(data.data!.token!);
 
 
-            if(data.message == "Validation successful") {
+            if(data.message == "The password reset code has been sent successfully.") {
 
               print("############3 Validated");
 
@@ -537,21 +319,18 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
                 });
 
 
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => PasswordScreen(
-                    full_name: full_name,
-
-                    username:username,
-                    email: email,
-                    contact_number: phone,
-                  )),
-                );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) =>
+                        VerifyResetToken(
+                          email: email,
+                        )),
+                  );
+                });
 
 
 
 
-              });
 
             }
 
@@ -588,6 +367,7 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
 
 
 
+
   void _showLoadingDialogModal(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -613,7 +393,7 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
                   height: 20,
                 ),
 
-                Text("is verifying details", style: TextStyle(fontSize: 32, fontWeight: FontWeight.w400, height: 1.2),),
+                Text("is sending token", style: TextStyle(fontSize: 32, fontWeight: FontWeight.w400, height: 1.2),),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -636,7 +416,7 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
     );
   }
 
-  void _showErrorDialogModal(BuildContext context, VerifyDetailsModel model) {
+  void _showErrorDialogModal(BuildContext context, VerifyResetTokenModel model) {
     List<Widget> errorWidgets = [];
     if (model.errors != null) {
       if (model.errors!.email != null) {
@@ -644,13 +424,9 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
           errorWidgets.add(Text(error));
         });
       }
-      if (model.errors!.username != null) {
-        model.errors!.username!.forEach((error) {
-          errorWidgets.add(Text(error));
-        });
-      }
-      if (model.errors!.phoneNumber != null) {
-        model.errors!.phoneNumber!.forEach((error) {
+
+      if (model.errors!.token != null) {
+        model.errors!.token!.forEach((error) {
           errorWidgets.add(Text(error));
         });
       }
@@ -729,7 +505,7 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
                   height: 20,
                 ),
 
-                Text("Account Setup Successful", style: TextStyle(fontSize: 32, fontWeight: FontWeight.w500, height: 1.2),),
+                Text("Code sent to email", style: TextStyle(fontSize: 32, fontWeight: FontWeight.w500, height: 1.2),),
                 SizedBox(
                   height: 20,
                 ),

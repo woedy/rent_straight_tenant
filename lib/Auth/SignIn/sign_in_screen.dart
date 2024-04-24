@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:rent_straight_tenent/Auth/Password/forgot_password.dart';
 import 'package:rent_straight_tenent/Auth/SignIn/model/sign_in_model.dart';
 import 'package:rent_straight_tenent/Auth/SignUp/sign_up_screen.dart';
 import 'package:rent_straight_tenent/Components/generic_error_dialog_box.dart';
@@ -367,6 +368,7 @@ class _SignInScreenState extends State<SignInScreen>
                                         InkWell(
                                           onTap: (){
 
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) => ForgotPasswordScreen()));
 
 
                                           },
