@@ -169,7 +169,7 @@ class _EmailVerificationState extends State<EmailVerification> with SingleTicker
                                                     highlightAnimationEndColor: Colors.white12,
                                                   ),
                                                 ),
-                                               
+
                                               ],
                                             ),
                                           )
@@ -361,8 +361,12 @@ class _EmailVerificationState extends State<EmailVerification> with SingleTicker
                 InkWell(
                   onTap: () {
 
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
-
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => HomeScreen()),
+                          (route) => false,
+                    );
 
                   },
                   child: Row(
