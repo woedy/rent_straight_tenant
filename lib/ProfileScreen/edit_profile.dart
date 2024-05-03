@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -5,6 +7,7 @@ import 'package:rent_straight_tenent/Components/keyboard_utils.dart';
 import 'package:rent_straight_tenent/constants.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class EditUserProfile extends StatefulWidget {
   const EditUserProfile({super.key});
@@ -28,6 +31,19 @@ class _EditUserProfileState extends State<EditUserProfile> {
   String? _code;
   String? _number;
   String? country;
+
+
+
+  Map<String, dynamic> userData = {};
+
+
+  @override
+  void initState() {
+    super.initState();
+    // Retrieve data from SharedPreferences
+    getUserData();
+  }
+
 
 
   @override
@@ -78,10 +94,11 @@ class _EditUserProfileState extends State<EditUserProfile> {
                       height: 60,
                       width: 60,
                       decoration: BoxDecoration(
-                          color: Colors.red,
+                          color: Colors.transparent,
                           borderRadius: BorderRadius.circular(20),
                           image: DecorationImage(
-                              image: AssetImage("assets/images/fred.png")
+                              image: NetworkImage(userData["avatar"]),
+                              fit: BoxFit.cover
                           )
 
                       ),
@@ -100,7 +117,7 @@ class _EditUserProfileState extends State<EditUserProfile> {
                 children: [
                   CircleAvatar(
                     radius: 90,
-                    backgroundImage: AssetImage("assets/images/fred.png"),
+                    backgroundImage: NetworkImage(userData["avatar"]),
                     child: Icon(Icons.camera_alt, color: Colors.white,),
                   ),
                 ],
@@ -424,4 +441,16 @@ class _EditUserProfileState extends State<EditUserProfile> {
       ),
     );
   }
+
+
+
+
+  Future<void> getUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String userDataString = prefs.getString('user_data') ?? '';
+    setState(() {
+      userData = json.decode(userDataString);
+    });
+  }
+
 }

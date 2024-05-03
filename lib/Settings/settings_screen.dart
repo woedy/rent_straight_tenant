@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rent_straight_tenent/Auth/SignIn/sign_in_screen.dart';
@@ -23,6 +25,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   PageController _pageController = PageController(initialPage: 0);
   int currentPage = 0;
+
+
+
+  Map<String, dynamic> userData = {};
+
+
+  @override
+  void initState() {
+    super.initState();
+    // Retrieve data from SharedPreferences
+    getUserData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,10 +82,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       height: 60,
                       width: 60,
                       decoration: BoxDecoration(
-                          color: Colors.red,
+                          color: Colors.transparent,
                           borderRadius: BorderRadius.circular(20),
                           image: DecorationImage(
-                              image: AssetImage("assets/images/fred.png")
+                              image: NetworkImage(userData["avatar"]),
+                            fit: BoxFit.cover
                           )
 
                       ),
@@ -110,7 +125,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       children: [
                         CircleAvatar(
                           radius: 50,
-                          backgroundImage: AssetImage("assets/images/fred.png"),
+                          backgroundImage: NetworkImage(userData["avatar"]),
                         ),
                         SizedBox(
                           width: 20,
@@ -119,12 +134,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("Mr. Fred Fafa", style: TextStyle(fontSize: 20, fontFamily: "MontserratAlternates", fontWeight: FontWeight.w500, height: 1.2,),),
+                            Text(userData["fullName"].toString(), style: TextStyle(fontSize: 20, fontFamily: "MontserratAlternates", fontWeight: FontWeight.w500, height: 1.2,),),
                             SizedBox(
                               height: 10,
                             ),
 
-                            Text("remyfafa12@gmail.com", style: TextStyle(fontSize: 15, fontFamily: "MontserratAlternates", fontWeight: FontWeight.w500, height: 1.2,),),
+                            Text(userData["email"].toString(), style: TextStyle(fontSize: 15, fontFamily: "MontserratAlternates", fontWeight: FontWeight.w500, height: 1.2,),),
                           ],
                         ),
                       ],
@@ -393,6 +408,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
     await prefs.remove("API_Key");
     await prefs.remove("user_data");
   }
+
+
+  Future<void> getUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String userDataString = prefs.getString('user_data') ?? '';
+    setState(() {
+      userData = json.decode(userDataString);
+    });
+  }
+
+
 
 
 

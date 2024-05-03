@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rent_straight_tenent/ChatScreen/chat_message_screen.dart';
@@ -6,6 +8,7 @@ import 'package:rent_straight_tenent/HomeScreen/home_screen.dart';
 import 'package:rent_straight_tenent/ProfileScreen/UserProfileScreen.dart';
 import 'package:rent_straight_tenent/Settings/settings_screen.dart';
 import 'package:rent_straight_tenent/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -18,6 +21,17 @@ class _ChatScreenState extends State<ChatScreen> {
 
   PageController _pageController = PageController(initialPage: 0);
   int currentPage = 0;
+
+
+  Map<String, dynamic> userData = {};
+
+
+  @override
+  void initState() {
+    super.initState();
+    // Retrieve data from SharedPreferences
+    getUserData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,10 +77,11 @@ class _ChatScreenState extends State<ChatScreen> {
                       height: 60,
                       width: 60,
                       decoration: BoxDecoration(
-                          color: Colors.red,
+                          color: Colors.transparent,
                           borderRadius: BorderRadius.circular(20),
                           image: DecorationImage(
-                              image: AssetImage("assets/images/fred.png")
+                              image: NetworkImage(userData["avatar"]),
+                              fit: BoxFit.cover
                           )
 
                       ),
@@ -339,6 +354,15 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
       ),
     );
+  }
+
+
+  Future<void> getUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String userDataString = prefs.getString('user_data') ?? '';
+    setState(() {
+      userData = json.decode(userDataString);
+    });
   }
 
 

@@ -77,16 +77,24 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: _user_api,
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-
-          return api_key == null ? SplashScreen() : HomeScreen();
-          //return VerifyResetToken(email: "ximod71716@funvane.com",);
-          //return ForgotPasswordScreen();
-
-        });
+      future: _user_api,
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          // While the future is still loading, show a loading indicator
+          return SplashScreen();
+        } else {
+          // If the future has completed, check if the API key is available
+          if (api_key == null) {
+            // If the API key is not available, show the SplashScreen
+            return SplashScreen();
+          } else {
+            // If the API key is available, show the HomeScreen
+            return HomeScreen();
+          }
+        }
+      },
+    );
   }
-
 
   Future apiKey() async {
     api_key = await getApiPref();

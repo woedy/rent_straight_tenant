@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,6 +8,7 @@ import 'package:rent_straight_tenent/Landloard/landloard.dart';
 import 'package:rent_straight_tenent/constants.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ChatMessageScreen extends StatefulWidget {
   const ChatMessageScreen({super.key});
@@ -29,6 +32,20 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
   String? _code;
   String? _number;
   String? country;
+
+
+
+
+  Map<String, dynamic> userData = {};
+
+
+  @override
+  void initState() {
+    super.initState();
+    // Retrieve data from SharedPreferences
+    getUserData();
+  }
+
 
 
   @override
@@ -79,10 +96,11 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
                       height: 60,
                       width: 60,
                       decoration: BoxDecoration(
-                          color: Colors.red,
+                          color: Colors.transparent,
                           borderRadius: BorderRadius.circular(20),
                           image: DecorationImage(
-                              image: AssetImage("assets/images/fred.png")
+                              image: NetworkImage(userData["avatar"]),
+                              fit: BoxFit.cover
                           )
 
                       ),
@@ -273,4 +291,15 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
       ),
     );
   }
+
+
+
+  Future<void> getUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String userDataString = prefs.getString('user_data') ?? '';
+    setState(() {
+      userData = json.decode(userDataString);
+    });
+  }
+
 }

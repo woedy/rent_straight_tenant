@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ import 'package:rent_straight_tenent/constants.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:pin_code_text_field/pin_code_text_field.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class InviteFriendScreen extends StatefulWidget {
   const InviteFriendScreen({super.key});
@@ -25,6 +27,16 @@ class _InviteFriendScreenState extends State<InviteFriendScreen> with SingleTick
   late AnimationController _controller;
 
 
+
+  Map<String, dynamic> userData = {};
+
+
+  @override
+  void initState() {
+    super.initState();
+    // Retrieve data from SharedPreferences
+    getUserData();
+  }
 
 
 
@@ -78,10 +90,11 @@ class _InviteFriendScreenState extends State<InviteFriendScreen> with SingleTick
                           height: 60,
                           width: 60,
                           decoration: BoxDecoration(
-                              color: Colors.red,
+                              color: Colors.transparent,
                               borderRadius: BorderRadius.circular(20),
                               image: DecorationImage(
-                                  image: AssetImage("assets/images/fred.png")
+                                  image: NetworkImage(userData["avatar"]),
+                                  fit: BoxFit.cover
                               )
 
                           ),
@@ -314,6 +327,13 @@ class _InviteFriendScreenState extends State<InviteFriendScreen> with SingleTick
   }
 
 
+  Future<void> getUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String userDataString = prefs.getString('user_data') ?? '';
+    setState(() {
+      userData = json.decode(userDataString);
+    });
+  }
 
 
 }

@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:rent_straight_tenent/Auth/SignUp/models/verify_email_model.dart';
 import 'package:rent_straight_tenent/Auth/SignUp/upload_photo.dart';
 import 'package:rent_straight_tenent/Components/keyboard_utils.dart';
 import 'package:rent_straight_tenent/HomeScreen/home_screen.dart';
@@ -10,6 +12,44 @@ import 'package:rent_straight_tenent/constants.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:pin_code_text_field/pin_code_text_field.dart';
+import 'package:http/http.dart' as http;
+
+Future<VerifyEmailModel> verify_email(email_token) async {
+
+  var token = await getApiPref();
+
+  final response = await http.post(
+    Uri.parse(hostName + "email/verify-token"),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer '  + token.toString()
+    },
+    body: jsonEncode({
+      "token": email_token,
+    }),
+  );
+
+
+  if (response.statusCode == 200 || response.statusCode == 201) {
+    print(jsonDecode(response.body));
+    final result = json.decode(response.body);
+
+    return VerifyEmailModel.fromJson(jsonDecode(response.body));
+  } else if (response.statusCode == 422) {
+    print(jsonDecode(response.body));
+    return VerifyEmailModel.fromJson(jsonDecode(response.body));
+  }  else if (response.statusCode == 403) {
+    print((response.body));
+    return VerifyEmailModel.fromJson(jsonDecode(response.body));
+  }   else if (response.statusCode == 400) {
+    print(jsonDecode(response.body));
+    return VerifyEmailModel.fromJson(jsonDecode(response.body));
+  }  else {
+
+    throw Exception('Failed to load data');
+  }
+}
 
 class EmailVerification extends StatefulWidget {
   final full_name;
@@ -39,6 +79,8 @@ class _EmailVerificationState extends State<EmailVerification> with SingleTicker
 
   String email_token = "";
   TextEditingController controller = TextEditingController(text: "");
+  Future<VerifyEmailModel>? _futureVerifyEmail;
+  bool _isLoading = false; // Add a boolean flag to track loading state
 
 
   @override
@@ -56,8 +98,14 @@ class _EmailVerificationState extends State<EmailVerification> with SingleTicker
     super.dispose();
   }
 
+
   @override
   Widget build(BuildContext context) {
+    return (_futureVerifyEmail == null) ? buildColumn() : buildFutureBuilder(context);
+  }
+
+
+  buildColumn(){
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -110,9 +158,10 @@ class _EmailVerificationState extends State<EmailVerification> with SingleTicker
                                     //key: _formKey,
                                     child: Container(
                                       width: MediaQuery.of(context).size.width,
-                                      //color: Colors.red,
+                                      color: Colors.transparent,
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
                                         children: [
                                           SizedBox(
                                             width: 10,
@@ -169,7 +218,6 @@ class _EmailVerificationState extends State<EmailVerification> with SingleTicker
                                                     highlightAnimationEndColor: Colors.white12,
                                                   ),
                                                 ),
-                                               
                                               ],
                                             ),
                                           )
@@ -219,26 +267,10 @@ class _EmailVerificationState extends State<EmailVerification> with SingleTicker
                                   child: InkWell(
                                     onTap: () {
 
-                                      /*         if (_formKey.currentState!.validate()) {
-                                        _formKey.currentState!.save();
-                                        KeyboardUtil.hideKeyboard(context);
+                                      setState(() {
+                                        _futureVerifyEmail = verify_email(email_token);
 
-                                        //_futureSignIn = signInUser(email!, password!);
-                                        //_futureSignIn = signInUser(user!, password!, platformType!);
-
-
-                                        _showLoadingDialogModal(context);
-                                      }*/
-
-                                      _showLoadingDialogModal(context);
-
-                                      Timer(
-                                          Duration(seconds: 4),
-                                              () {
-                                            Navigator.of(context).pop();
-                                            _showSuccessDialogModal(context);
-                                          }
-                                      );
+                                      });
 
 
                                     },
@@ -279,51 +311,105 @@ class _EmailVerificationState extends State<EmailVerification> with SingleTicker
   }
 
 
-  void _showLoadingDialogModal(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return SingleChildScrollView(
-          child: Container(
-            padding: EdgeInsets.all(15),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Image.asset("assets/images/rent_logo.png"),
-                    SizedBox(
-                      width: 10,
-                    ),
+  FutureBuilder<VerifyEmailModel> buildFutureBuilder(context) {
 
-                    Text("RentStraight", style: TextStyle(fontSize: 32, fontWeight: FontWeight.w500, height: 1.2),),
+    return FutureBuilder<VerifyEmailModel>(
+      future: _futureVerifyEmail,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting && !_isLoading) {
+          _isLoading = true;
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            _showLoadingDialogModal(context);
+          });
+        } else {
+          _isLoading = false;
+          Navigator.of(context, rootNavigator: true).pop();
+        }
+
+        if (snapshot.hasData) {
+          var data = snapshot.data!;
+
+          if (data.message == "Email verified successfully") {
+            // Show success dialog
+
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              _showSuccessDialogModal(context);
+            });
 
 
-                  ],
-                ),
-                SizedBox(
-                  height: 20,
-                ),
+            // Reset the verification future to null to rebuild the UI
+            _futureVerifyEmail = null;
 
-                Text("is confirming your verification code", style: TextStyle(fontSize: 32, fontWeight: FontWeight.w400, height: 1.2),),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    RotationTransition(
-                      turns: _controller,
-                      child: Image.asset(
-                        "assets/icons/loading.png",
-                        color: Colors.black,
+            // Return an empty container for now, as we will navigate away in the success dialog
+            return Container();
+          } else {
+            // Show error dialog
+            _showErrorDialogModal(context);
+          }
+        }
 
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
+        return Scaffold(
+          body: Container(),
         );
       },
     );
+
+  }
+
+
+
+
+  void _showLoadingDialogModal(BuildContext context) {
+
+    if(_isLoading) {
+      showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return SingleChildScrollView(
+            child: Container(
+              padding: EdgeInsets.all(15),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Image.asset("assets/images/rent_logo.png"),
+                      SizedBox(
+                        width: 10,
+                      ),
+
+                      Text("RentStraight", style: TextStyle(fontSize: 32, fontWeight: FontWeight.w500, height: 1.2),),
+
+
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+
+                  Text("is confirming your verification code", style: TextStyle(fontSize: 32, fontWeight: FontWeight.w400, height: 1.2),),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      RotationTransition(
+                        turns: _controller,
+                        child: Image.asset(
+                          "assets/icons/loading.png",
+                          color: Colors.black,
+
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      );
+    }else {
+      Navigator.of(context).pop(); // Dismiss the modal dialog if loading is completed
+    }
+
   }
 
   void _showSuccessDialogModal(BuildContext context) {
@@ -351,6 +437,7 @@ class _EmailVerificationState extends State<EmailVerification> with SingleTicker
                   height: 20,
                 ),
 
+
                 Text("Your code has been verified !", style: TextStyle(fontSize: 32, fontWeight: FontWeight.w400, height: 1.2),),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -361,8 +448,12 @@ class _EmailVerificationState extends State<EmailVerification> with SingleTicker
                 InkWell(
                   onTap: () {
 
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
-
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => HomeScreen()),
+                          (route) => false,
+                    );
 
                   },
                   child: Row(
@@ -392,6 +483,45 @@ class _EmailVerificationState extends State<EmailVerification> with SingleTicker
                       ),
                     ],
                   ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+  void _showErrorDialogModal(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.all(15),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Image.asset("assets/images/rent_logo.png"),
+                    SizedBox(
+                      width: 10,
+                    ),
+
+                    Text("RentStraight", style: TextStyle(fontSize: 32, fontWeight: FontWeight.w500, height: 1.2),),
+
+
+                  ],
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+
+                Text("Invalid Code", style: TextStyle(fontSize: 32, fontWeight: FontWeight.w400, height: 1.2),),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Icon(Icons.highlight_remove, color: Colors.red, size: 50,)
+                  ],
                 ),
               ],
             ),

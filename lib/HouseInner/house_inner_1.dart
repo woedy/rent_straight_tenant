@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rent_straight_tenent/ChatScreen/chat_message_screen.dart';
@@ -5,6 +7,7 @@ import 'package:rent_straight_tenent/HouseInner/house_inner_apply.dart';
 import 'package:rent_straight_tenent/Landloard/call_landloard.dart';
 import 'package:rent_straight_tenent/Landloard/landloard.dart';
 import 'package:rent_straight_tenent/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HouseInner1 extends StatefulWidget {
   const HouseInner1({super.key});
@@ -17,6 +20,18 @@ class _HouseInner1State extends State<HouseInner1> {
 
   PageController _pageController = PageController(initialPage: 0);
   int currentPage = 0;
+
+
+  Map<String, dynamic> userData = {};
+
+
+  @override
+  void initState() {
+    super.initState();
+    // Retrieve data from SharedPreferences
+    getUserData();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -60,11 +75,11 @@ class _HouseInner1State extends State<HouseInner1> {
                     height: 60,
                     width: 60,
                     decoration: BoxDecoration(
-                      color: Colors.red,
+                      color: Colors.transparent,
                       borderRadius: BorderRadius.circular(20),
                       image: DecorationImage(
-                        image: AssetImage("assets/images/fred.png"),
-                        fit: BoxFit.cover
+                          image: NetworkImage(userData["avatar"]),
+                          fit: BoxFit.cover
                       )
 
                     ),
@@ -427,6 +442,16 @@ class _HouseInner1State extends State<HouseInner1> {
         ),
       ),
     );
+  }
+
+
+
+  Future<void> getUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String userDataString = prefs.getString('user_data') ?? '';
+    setState(() {
+      userData = json.decode(userDataString);
+    });
   }
 
 

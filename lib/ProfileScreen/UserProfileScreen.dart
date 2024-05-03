@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rent_straight_tenent/HouseInner/house_inner_1.dart';
 import 'package:rent_straight_tenent/ProfileScreen/edit_profile.dart';
 import 'package:rent_straight_tenent/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({super.key});
@@ -15,6 +18,17 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
   PageController _pageController = PageController(initialPage: 0);
   int currentPage = 0;
+
+
+  Map<String, dynamic> userData = {};
+
+
+  @override
+  void initState() {
+    super.initState();
+    // Retrieve data from SharedPreferences
+    getUserData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,12 +99,12 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Mr. Fred Fafa", style: TextStyle(fontSize: 20, fontFamily: "MontserratAlternates", fontWeight: FontWeight.w500, height: 1.2,),),
+                      Text(userData["full_name"].toString(), style: TextStyle(fontSize: 20, fontFamily: "MontserratAlternates", fontWeight: FontWeight.w500, height: 1.2,),),
                       SizedBox(
                         height: 10,
                       ),
 
-                      Text("remyfafa12@gmail.com", style: TextStyle(fontSize: 15, fontFamily: "MontserratAlternates", fontWeight: FontWeight.w500, height: 1.2,),),
+                      Text(userData["email"].toString(), style: TextStyle(fontSize: 15, fontFamily: "MontserratAlternates", fontWeight: FontWeight.w500, height: 1.2,),),
                     ],
                   ),
                 ],
@@ -323,6 +337,16 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         ),
       ),
     );
+  }
+
+
+
+  Future<void> getUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String userDataString = prefs.getString('user_data') ?? '';
+    setState(() {
+      userData = json.decode(userDataString);
+    });
   }
 
 

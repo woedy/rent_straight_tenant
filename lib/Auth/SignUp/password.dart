@@ -15,6 +15,7 @@ import 'package:rent_straight_tenent/HomeScreen/home_screen.dart';
 import 'package:rent_straight_tenent/constants.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Components/generic_success_dialog_box.dart';
 import 'package:http/http.dart' as http;
@@ -65,6 +66,11 @@ Future<SignUpModel> signUpUser(String full_name, String username, String email, 
   }
 }
 
+
+Future<void> saveUserData(Map<String, dynamic> userData) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setString('user_data', json.encode(userData));
+}
 
 class PasswordScreen extends StatefulWidget {
   final full_name;

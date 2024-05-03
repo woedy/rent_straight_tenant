@@ -336,7 +336,6 @@ class _SignInScreenState extends State<SignInScreen>
                                               KeyboardUtil.hideKeyboard(context);
 
                                               _futureSignIn = signInUser(email!, password!);
-                                              //_futureSignIn = signInUser(user!, password!, platformType!);
 
 
                                             }
@@ -484,12 +483,6 @@ class _SignInScreenState extends State<SignInScreen>
                 _showSuccessDialogModal(context);
 
                 Future.delayed(Duration(milliseconds: 500), () {
-                  // Pop the dialog
-                  //Navigator.of(context).pop();
-
-                  // Navigate to the dashboard
-
-
 
 
                   Navigator.pushAndRemoveUntil(
@@ -498,12 +491,7 @@ class _SignInScreenState extends State<SignInScreen>
                         builder: (context) => HomeScreen()),
                         (route) => false,
                   );
-
                 });
-
-
-
-
               });
 
 
@@ -518,39 +506,13 @@ class _SignInScreenState extends State<SignInScreen>
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   Navigator.pop(context);
                   Navigator.pop(context);
-                 // Navigator.pop(context);
+                  Navigator.pop(context);
 
                   _showErrorDialogModal(context);
 
                   setState(() {
                     _futureSignIn = null; // Reset _futureSignIn here
                   });
-
-
-
-
-
-               /*   Future.delayed(Duration(milliseconds: 700), () {
-
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) => SignInScreen())
-                    );
-
-                  });*/
-
-
-
- /*                 showDialog(
-                      barrierDismissible: true,
-                      context: context,
-                      builder: (BuildContext context){
-                        return ErrorDialogBox(text: 'These credentials do not match our records.',);
-                      }
-                  );*/
-
-
-
-
 
                 });
               }
@@ -560,24 +522,6 @@ class _SignInScreenState extends State<SignInScreen>
 
 
           }
-
-   /*       return Scaffold(
-            body: Container(
-              width: MediaQuery.of(context).size.width,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircularProgressIndicator(),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text("Please Wait...")
-                ],
-              ),
-            ),
-          );
-*/
 
           return Scaffold(
             body: Container(),
