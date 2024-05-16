@@ -19,7 +19,7 @@ Future<UserDataModel> get_user_data() async {
   var user_id = await getUserIDPref();
 
   final response = await http.get(
-    Uri.parse(hostName + "user"),
+    Uri.parse(hostName + "me"),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Accept': 'application/json',
@@ -132,6 +132,7 @@ class _HomeScreenState extends State<HomeScreen>
 
             print("#########################");
             //print(data.data!.token!);
+            print(data);
 
             if(data.message == "User retrieved successful") {
 
@@ -140,7 +141,7 @@ class _HomeScreenState extends State<HomeScreen>
 
               return Scaffold(
                 body: SafeArea(
-                  child: Container(
+                  child:  Container(
                     height: MediaQuery.of(context).size.height,
                     padding: EdgeInsets.all(15),
                     child: Column(
@@ -184,7 +185,7 @@ class _HomeScreenState extends State<HomeScreen>
                                     borderRadius: BorderRadius.circular(20),
                                     image: DecorationImage(
                                         image: NetworkImage(data.data!.avatar!.toString()),
-                                      fit: BoxFit.cover
+                                        fit: BoxFit.cover
                                     )
 
                                 ),
@@ -323,17 +324,15 @@ class _HomeScreenState extends State<HomeScreen>
                               ),
                               Expanded(
                                 child: PageView(
-
                                   controller: _pageController,
                                   onPageChanged: (int page) {
-                                    setState(() {
-                                      currentPage = page;
-                                    });
+                                    // No need to use setState here
+                                    currentPage = page;
                                   },
                                   children: [
                                     _houses_page(),
                                     _houses_scroll(),
-                                    _houses_list()
+                                    _houses_list(),
                                     // Add more pages as needed
                                   ],
                                 ),
@@ -447,7 +446,6 @@ class _HomeScreenState extends State<HomeScreen>
               _showErrorDialogModal(context);
             }
 
-
             }
 
 
@@ -462,9 +460,12 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
 
+  @override
   void dispose() {
+    _controller.dispose(); // Dispose of the AnimationController
     super.dispose();
   }
+
 
   void _showLoadingDialogModal(BuildContext context) {
 

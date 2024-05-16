@@ -42,7 +42,7 @@ Future<SignInModel> signInUser(String email, String password) async {
       await saveUserID(result['data']['user_id'].toString());
 
 
-      await saveUserData(result['data']);
+      //await saveUserData(result['data']);
 
 
 

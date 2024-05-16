@@ -72,10 +72,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     height: 60,
                     width: 60,
                     decoration: BoxDecoration(
-                      color: Colors.red,
+                      //color: Colors.red,
                       borderRadius: BorderRadius.circular(20),
                       image: DecorationImage(
-                        image: AssetImage("assets/images/fred.png")
+                        image: NetworkImage(userData["avatar"].toString()),
                       )
 
                     ),
@@ -90,7 +90,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 children: [
                   CircleAvatar(
                     radius: 50,
-                    backgroundImage: AssetImage("assets/images/fred.png"),
+                    backgroundImage: NetworkImage(userData["avatar"].toString()),
                   ),
                   SizedBox(
                     width: 20,
@@ -99,7 +99,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(userData["full_name"].toString(), style: TextStyle(fontSize: 20, fontFamily: "MontserratAlternates", fontWeight: FontWeight.w500, height: 1.2,),),
+                      Text(userData["fullName"].toString(), style: TextStyle(fontSize: 20, fontFamily: "MontserratAlternates", fontWeight: FontWeight.w500, height: 1.2,),),
                       SizedBox(
                         height: 10,
                       ),
