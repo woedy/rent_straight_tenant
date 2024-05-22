@@ -329,6 +329,7 @@ class _EmailVerificationState extends State<EmailVerification> with SingleTicker
   void _showSuccessDialogModal(BuildContext context) {
     showModalBottomSheet(
       context: context,
+        isDismissible: false,
       builder: (BuildContext context) {
         return SingleChildScrollView(
           child: Container(
