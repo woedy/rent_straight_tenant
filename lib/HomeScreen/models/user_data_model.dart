@@ -29,6 +29,7 @@ class Data {
   String? phoneNumber;
   String? username;
   String? avatar;
+  String? dateOfBirth;
   String? age;
   String? idType;
 
@@ -42,36 +43,39 @@ class Data {
         this.phoneNumber,
         this.username,
         this.avatar,
+        this.dateOfBirth,
         this.age,
         this.idType});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     uuid = json['uuid'];
-    fullName = json['fullName'];
-    firstName = json['firstName'];
-    lastName = json['lastName'];
+    fullName = json['full_name'];
+    firstName = json['first_name'];
+    lastName = json['last_name'];
     email = json['email'];
-    phoneNumber = json['phoneNumber'];
+    phoneNumber = json['phone_number'];
     username = json['username'];
     avatar = json['avatar'];
+    dateOfBirth = json['date_of_birth'];
     age = json['age'];
-    idType = json['idType'];
+    idType = json['id_type'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['uuid'] = this.uuid;
-    data['fullName'] = this.fullName;
-    data['firstName'] = this.firstName;
-    data['lastName'] = this.lastName;
+    data['full_name'] = this.fullName;
+    data['first_name'] = this.firstName;
+    data['last_name'] = this.lastName;
     data['email'] = this.email;
-    data['phoneNumber'] = this.phoneNumber;
+    data['phone_number'] = this.phoneNumber;
     data['username'] = this.username;
     data['avatar'] = this.avatar;
+    data['date_of_birth'] = this.dateOfBirth;
     data['age'] = this.age;
-    data['idType'] = this.idType;
+    data['id_type'] = this.idType;
     return data;
   }
 }

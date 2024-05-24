@@ -326,8 +326,15 @@ class _HomeScreenState extends State<HomeScreen>
                                 child: PageView(
                                   controller: _pageController,
                                   onPageChanged: (int page) {
-                                    // No need to use setState here
                                     currentPage = page;
+
+                                    /*   try {
+                                      setState(() {
+                                        currentPage = page;
+                                      });
+                                    } catch (e) {
+                                      print('Error: $e');
+                                    }*/
                                   },
                                   children: [
                                     _houses_page(),

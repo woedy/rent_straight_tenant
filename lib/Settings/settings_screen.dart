@@ -134,7 +134,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(userData["fullName"].toString(), style: TextStyle(fontSize: 20, fontFamily: "MontserratAlternates", fontWeight: FontWeight.w500, height: 1.2,),),
+                            Text(userData["full_name"].toString(), style: TextStyle(fontSize: 20, fontFamily: "MontserratAlternates", fontWeight: FontWeight.w500, height: 1.2,),),
                             SizedBox(
                               height: 10,
                             ),
