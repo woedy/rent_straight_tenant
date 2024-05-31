@@ -497,7 +497,7 @@ class _SignInScreenState extends State<SignInScreen>
 
             }
 
-            else if (data.message == "These credentials do not match our records.") {
+            else if (data.message == "Invalid Request.") {
               String? errorKey = snapshot.data!.errors!.keys.firstWhere(
                     (key) => key == "password" || key == "email",
                 orElse: () => null!,

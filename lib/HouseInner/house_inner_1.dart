@@ -6,6 +6,7 @@ import 'package:rent_straight_tenent/ChatScreen/chat_message_screen.dart';
 import 'package:rent_straight_tenent/HouseInner/house_inner_apply.dart';
 import 'package:rent_straight_tenent/Landloard/call_landloard.dart';
 import 'package:rent_straight_tenent/Landloard/landloard.dart';
+import 'package:rent_straight_tenent/ProfileScreen/UserProfileScreen.dart';
 import 'package:rent_straight_tenent/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -71,17 +72,36 @@ class _HouseInner1State extends State<HouseInner1> {
                     children: [
            ],
                   ),
-                  Container(
-                    height: 60,
-                    width: 60,
-                    decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      borderRadius: BorderRadius.circular(20),
-                      image: DecorationImage(
-                          image: NetworkImage(userData["avatar"]),
-                          fit: BoxFit.cover
-                      )
-
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => UserProfileScreen()),
+                      );
+                    },
+                    child: Container(
+                      height: 60,
+                      width: 60,
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Image.network(
+                          userData["avatar"].toString(),
+                          fit: BoxFit.cover,
+                          errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                            return Container(
+                              color: Colors.grey,
+                              child: Icon(
+                                Icons.person,
+                                color: Colors.white,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
                     ),
                   )
                 ],

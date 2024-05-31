@@ -553,6 +553,20 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
 
               });
 
+            }  else if (data.message == "Invalid Request.") {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                Navigator.pop(context);
+                Navigator.pop(context);
+                Navigator.pop(context);
+
+                _showErrorDialogModal(context, data );
+
+                setState(() {
+                  _futureVerifyDetail = null; // Reset _futureSignIn here
+                });
+
+              });
+
             }
 
             else {

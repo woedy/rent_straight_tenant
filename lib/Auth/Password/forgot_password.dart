@@ -304,7 +304,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> with Single
             //print(data.data!.token!);
 
 
-            if(data.message == "The password reset code has been sent successfully.") {
+            if(data.message == "The password reset code has been sent provided the email exists.") {
 
               print("############3 Validated");
 

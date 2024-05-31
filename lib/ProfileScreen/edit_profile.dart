@@ -9,6 +9,8 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'UserProfileScreen.dart';
+
 class EditUserProfile extends StatefulWidget {
   const EditUserProfile({super.key});
 
@@ -90,17 +92,36 @@ class _EditUserProfileState extends State<EditUserProfile> {
                       children: [
                       ],
                     ),
-                    Container(
-                      height: 60,
-                      width: 60,
-                      decoration: BoxDecoration(
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => UserProfileScreen()),
+                        );
+                      },
+                      child: Container(
+                        height: 60,
+                        width: 60,
+                        decoration: BoxDecoration(
                           color: Colors.transparent,
                           borderRadius: BorderRadius.circular(20),
-                          image: DecorationImage(
-                              image: NetworkImage(userData["avatar"]),
-                              fit: BoxFit.cover
-                          )
-
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Image.network(
+                            userData["avatar"].toString(),
+                            fit: BoxFit.cover,
+                            errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                              return Container(
+                                color: Colors.grey,
+                                child: Icon(
+                                  Icons.person,
+                                  color: Colors.white,
+                                ),
+                              );
+                            },
+                          ),
+                        ),
                       ),
                     )
                   ],
@@ -115,10 +136,29 @@ class _EditUserProfileState extends State<EditUserProfile> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  CircleAvatar(
-                    radius: 90,
-                    backgroundImage: NetworkImage(userData["avatar"]),
-                    child: Icon(Icons.camera_alt, color: Colors.white,),
+                  Container(
+                    height: 150,
+                    width: 150,
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child: Image.network(
+                        userData["avatar"].toString(),
+                        fit: BoxFit.cover,
+                        errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                          return Container(
+                            color: Colors.grey,
+                            child: Icon(
+                              Icons.person,
+                              color: Colors.white,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
                   ),
                 ],
               ),

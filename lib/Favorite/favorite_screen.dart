@@ -68,21 +68,34 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                     ],
                   ),
                   InkWell(
-                    onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => UserProfileScreen()));
-
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => UserProfileScreen()),
+                      );
                     },
                     child: Container(
                       height: 60,
                       width: 60,
                       decoration: BoxDecoration(
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.circular(20),
-                          image: DecorationImage(
-                              image: NetworkImage(userData["avatar"]),
-                              fit: BoxFit.cover
-                          )
-
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Image.network(
+                          userData["avatar"].toString(),
+                          fit: BoxFit.cover,
+                          errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                            return Container(
+                              color: Colors.grey,
+                              child: Icon(
+                                Icons.person,
+                                color: Colors.white,
+                              ),
+                            );
+                          },
+                        ),
                       ),
                     ),
                   )

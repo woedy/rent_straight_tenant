@@ -1,25 +1,40 @@
 class VerifyEmailModel {
+  Errors? errors;
   String? message;
-  Map<String, List<String>>? errors;
 
-  VerifyEmailModel({this.message, this.errors});
+  VerifyEmailModel({this.errors, this.message});
 
-  factory VerifyEmailModel.fromJson(Map<String, dynamic> json) {
-    return VerifyEmailModel(
-      message: json['message'],
-      errors: json['errors'] != null ? _parseErrors(json['errors']) : null,
-    );
+  VerifyEmailModel.fromJson(Map<String, dynamic> json) {
+    errors =
+    json['errors'] != null ? new Errors.fromJson(json['errors']) : null;
+    message = json['message'];
   }
 
-  static Map<String, List<String>> _parseErrors(Map<String, dynamic> errorData) {
-    Map<String, List<String>> errors = {};
-    errorData.forEach((key, value) {
-      if (value is List) {
-        errors[key] = List<String>.from(value);
-      } else if (value is String) {
-        errors[key] = [value];
-      }
-    });
-    return errors;
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+
+    if (this.errors != null) {
+      data['errors'] = this.errors!.toJson();
+    }
+    data['message'] = this.message;
+    return data;
+  }
+}
+
+
+class Errors {
+  List<String>? token;
+
+
+  Errors({this.token,});
+
+  Errors.fromJson(Map<String, dynamic> json) {
+    token = json['token'].cast<String>();
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['token'] = this.token;
+    return data;
   }
 }

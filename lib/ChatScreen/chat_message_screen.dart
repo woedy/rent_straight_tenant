@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rent_straight_tenent/Components/keyboard_utils.dart';
 import 'package:rent_straight_tenent/Landloard/landloard.dart';
+import 'package:rent_straight_tenent/ProfileScreen/UserProfileScreen.dart';
 import 'package:rent_straight_tenent/constants.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
@@ -92,17 +93,36 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
                       children: [
                       ],
                     ),
-                    Container(
-                      height: 60,
-                      width: 60,
-                      decoration: BoxDecoration(
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => UserProfileScreen()),
+                        );
+                      },
+                      child: Container(
+                        height: 60,
+                        width: 60,
+                        decoration: BoxDecoration(
                           color: Colors.transparent,
                           borderRadius: BorderRadius.circular(20),
-                          image: DecorationImage(
-                              image: NetworkImage(userData["avatar"]),
-                              fit: BoxFit.cover
-                          )
-
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Image.network(
+                            userData["avatar"].toString(),
+                            fit: BoxFit.cover,
+                            errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                              return Container(
+                                color: Colors.grey,
+                                child: Icon(
+                                  Icons.person,
+                                  color: Colors.white,
+                                ),
+                              );
+                            },
+                          ),
+                        ),
                       ),
                     )
                   ],
